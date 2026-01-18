@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Pharmacy Inventory System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background - SAME AS LOGIN */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #a8d8ff 0%, #b8e6e6 100%);
+        }
+
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 25s infinite;
+            border-radius: 50%;
+        }
+
+        .bg-animation span:nth-child(1) {
+            left: 25%;
+            animation-delay: 0s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .bg-animation span:nth-child(2) {
+            left: 10%;
+            animation-delay: 2s;
+            width: 20px;
+            height: 20px;
+        }
+
+        .bg-animation span:nth-child(3) {
+            left: 70%;
+            animation-delay: 4s;
+            width: 40px;
+            height: 40px;
+        }
+
+        .bg-animation span:nth-child(4) {
+            left: 40%;
+            animation-delay: 0s;
+            width: 60px;
+            height: 60px;
+        }
+
+        .bg-animation span:nth-child(5) {
+            left: 65%;
+            animation-delay: 0s;
+            width: 30px;
+            height: 30px;
+        }
+
+        .bg-animation span:nth-child(6) {
+            left: 75%;
+            animation-delay: 3s;
+            width: 50px;
+            height: 50px;
+        }
+
+        .bg-animation span:nth-child(7) {
+            left: 35%;
+            animation-delay: 7s;
+            width: 45px;
+            height: 45px;
+        }
+
+        .bg-animation span:nth-child(8) {
+            left: 50%;
+            animation-delay: 15s;
+            width: 25px;
+            height: 25px;
+        }
+
+        .bg-animation span:nth-child(9) {
+            left: 20%;
+            animation-delay: 2s;
+            width: 35px;
+            height: 35px;
+        }
+
+        .bg-animation span:nth-child(10) {
+            left: 85%;
+            animation-delay: 0s;
+            width: 55px;
+            height: 55px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* All content should be above the animation */
+        .navbar,
+        .container,
+        .footer {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .nav-brand h2 {
+            font-size: 22px;
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #666;
+            padding: 25px 20px;
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-menu li a:hover {
+            color: #0093E9;
+            background: rgba(0, 147, 233, 0.05);
+        }
+
+        .nav-menu li a.active {
+            color: #0093E9;
+            border-bottom-color: #0093E9;
+            background: rgba(0, 147, 233, 0.05);
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-user span {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 147, 233, 0.3);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 147, 233, 0.4);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Flash Alerts */
+        .flash-alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideDown 0.3s ease-out;
+            font-size: 14px;
+            background: white;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: inherit;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .alert-close:hover {
+            opacity: 1;
+        }
+
+        /* Dashboard */
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .dashboard-header p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Dashboard Content Layout */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-card:hover::before {
+            width: 100%;
+            opacity: 0.05;
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-info h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .stat-info p {
+            color: #999;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .stat-primary::before {
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+        }
+
+        .stat-primary .stat-icon {
+            background: linear-gradient(135deg, rgba(0, 147, 233, 0.1) 0%, rgba(128, 208, 199, 0.1) 100%);
+        }
+
+        .stat-primary .stat-info h3 {
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-warning::before {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+        }
+
+        .stat-warning .stat-icon {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .stat-warning .stat-info h3 {
+            color: #f59e0b;
+        }
+
+        .stat-success::before {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .stat-success .stat-icon {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .stat-success .stat-info h3 {
+            color: #10b981;
+        }
+
+        .stat-danger::before {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .stat-danger .stat-icon {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .stat-danger .stat-info h3 {
+            color: #ef4444;
+        }
+
+        .stat-info-card::before {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+
+        .stat-info-card .stat-icon {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .stat-info-card .stat-info h3 {
+            color: #6366f1;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+        }
+
+        .quick-actions h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-icon {
+            font-size: 24px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+
+        /* Alert Section */
+        .alert-section {
+            margin-bottom: 15px;
+        }
+
+        .alert-section .alert {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert-section .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .alert-section .alert strong {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-section .alert a {
+            color: inherit;
+            font-weight: 600;
+            text-decoration: underline;
+            margin-left: 5px;
+            transition: opacity 0.3s;
+        }
+
+        .alert-section .alert a:hover {
+            opacity: 0.7;
+        }
+
+        .alert-section .alert-warning {
+            color: #856404;
+        }
+
+        .alert-section .alert-warning::before {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+        }
+
+        .alert-section .alert-error {
+            color: #721c24;
+        }
+
+        .alert-section .alert-error::before {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .alert-section .alert-info {
+            color: #0c5460;
+        }
+
+        .alert-section .alert-info::before {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-top: 40px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                gap: 0;
+            }
+
+            .nav-menu li a {
+                padding: 25px 15px;
+                font-size: 13px;
+            }
+
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-menu li a {
+                padding: 15px 12px;
+            }
+
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .dashboard-header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background - SAME AS LOGIN PAGE -->
+    <div class="bg-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="nav-logo">
+                <h2>Saravana Medicals</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('dashboard') }}" class="active">Dashboard</a></li>
+                <li><a href="{{ url_for('medicines') }}">Medicines</a></li>
+                <li><a href="{{ url_for('stock') }}">Stock</a></li>
+                <li><a href="{{ url_for('expiry') }}">Expiry Alert</a></li>
+                <li><a href="{{ url_for('billing') }}">Billing</a></li>
+                <li><a href="{{ url_for('suppliers_advanced') }}">Suppliers</a></li>
+                <li><a href="{{ url_for('reports') }}">Reports</a></li>
+            </ul>
+            <div class="nav-user">
+                <span>Welcome, {{ session.username }}</span>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash-alert alert-{{ category }}">
+                    {{ message }}
+                    <button class="alert-close" onclick="this.parentElement.style.display='none'">&times;</button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            
+        </div>
+
+        <!-- Dashboard Content - Two Panel Layout -->
+        <div class="dashboard-content">
+            <!-- Left Panel - Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card stat-primary">
+                    <div class="stat-icon">💊</div>
+                    <div class="stat-info">
+                        <h3>{{ total_medicines }}</h3>
+                        <p>Total Medicines</p>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-warning">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-info">
+                        <h3>{{ low_stock }}</h3>
+                        <p>Low Stock Items</p>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-success">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3>₹{{ "%.2f"|format(today_sales) }}</h3>
+                        <p>Today's Sales</p>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-danger">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-info">
+                        <h3>{{ expired }}</h3>
+                        <p>Expired Medicines</p>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-info-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <h3>{{ near_expiry }}</h3>
+                        <p>Near Expiry (30 days)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Quick Actions and Alerts -->
+            <div>
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="action-buttons">
+                        <a href="{{ url_for('medicines') }}" class="action-btn btn-primary">
+                            <span class="btn-icon">➕</span>
+                            Add Medicine
+                        </a>
+                        <a href="{{ url_for('billing') }}" class="action-btn btn-success">
+                            <span class="btn-icon">🧾</span>
+                            New Bill
+                        </a>
+                        <a href="{{ url_for('stock') }}" class="action-btn btn-warning">
+                            <span class="btn-icon">📦</span>
+                            Check Stock
+                        </a>
+                        <a href="{{ url_for('reports') }}" class="action-btn btn-info">
+                            <span class="btn-icon">📊</span>
+                            View Reports
+                        </a>
+                    </div>
+                </div>
+
+             <!-- Email Alerts Section -->
+<div class="quick-actions" style="margin-top: 20px;">
+    <h2>📧 Email Alerts</h2>
+    <div class="action-buttons">
+        <button class="action-btn btn-warning" onclick="sendExpiryEmails()" style="border: none; cursor: pointer;">
+            <span class="btn-icon">📬</span>
+            Send Expiry Alerts
+        </button>
+        <button class="action-btn btn-info" onclick="testEmail()" style="border: none; cursor: pointer;">
+            <span class="btn-icon">🧪</span>
+            Test Email
+        </button>
+    </div>
+</div>
+<script>
+function sendExpiryEmails() {
+    if (confirm('Send email alerts for expiring/expired medicines to admin?')) {
+        fetch('/send-expiry-email-alerts', {
+            method: 'POST'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ ' + data.message);
+            } else {
+                alert('❌ Error: ' + data.message);
+            }
+        })
+        .catch(err => {
+            alert('❌ Error: ' + err.message);
+        });
+    }
+}
+
+function testEmail() {
+    if (confirm('Send test email to admin?')) {
+        fetch('/test-email', {
+            method: 'POST'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Test email sent! Check your inbox.');
+            } else {
+                alert('❌ Failed to send test email');
+            }
+        });
+    }
+}
+</script>
+                
+                <!-- Alert Sections -->
+                <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
+                    {% if low_stock > 0 %}
+                    <div class="alert-section">
+                        <div class="alert alert-warning">
+                            <div>
+                                <strong>⚠️ Warning:</strong> {{ low_stock }} medicine(s) are running low on stock.
+                                <a href="{{ url_for('stock') }}">View Stock</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if expired > 0 %}
+                    <div class="alert-section">
+                        <div class="alert alert-error">
+                            <div>
+                                <strong>🚫 Alert:</strong> {{ expired }} medicine(s) have expired.
+                                <a href="{{ url_for('expiry') }}">View Expired Items</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if near_expiry > 0 %}
+                    <div class="alert-section">
+                        <div class="alert alert-info">
+                            <div>
+                                <strong>📅 Notice:</strong> {{ near_expiry }} medicine(s) will expire within 30 days.
+                                <a href="{{ url_for('expiry') }}">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; Saravana Medicals. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Auto-hide flash alerts after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.flash-alert');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0';
+                alert.style.transition = 'opacity 0.5s';
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

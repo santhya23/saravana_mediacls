@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing System - Pharmacy Inventory System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #a8d5e2 0%, #d4e7f0 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 25s infinite;
+            border-radius: 50%;
+        }
+
+        .bg-animation span:nth-child(1) {
+            left: 25%;
+            animation-delay: 0s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .bg-animation span:nth-child(2) {
+            left: 10%;
+            animation-delay: 2s;
+            width: 20px;
+            height: 20px;
+        }
+
+        .bg-animation span:nth-child(3) {
+            left: 70%;
+            animation-delay: 4s;
+            width: 40px;
+            height: 40px;
+        }
+
+        .bg-animation span:nth-child(4) {
+            left: 40%;
+            animation-delay: 0s;
+            width: 60px;
+            height: 60px;
+        }
+
+        .bg-animation span:nth-child(5) {
+            left: 65%;
+            animation-delay: 0s;
+            width: 30px;
+            height: 30px;
+        }
+
+        .bg-animation span:nth-child(6) {
+            left: 75%;
+            animation-delay: 3s;
+            width: 50px;
+            height: 50px;
+        }
+
+        .bg-animation span:nth-child(7) {
+            left: 35%;
+            animation-delay: 7s;
+            width: 45px;
+            height: 45px;
+        }
+
+        .bg-animation span:nth-child(8) {
+            left: 50%;
+            animation-delay: 15s;
+            width: 25px;
+            height: 25px;
+        }
+
+        .bg-animation span:nth-child(9) {
+            left: 20%;
+            animation-delay: 2s;
+            width: 35px;
+            height: 35px;
+        }
+
+        .bg-animation span:nth-child(10) {
+            left: 85%;
+            animation-delay: 0s;
+            width: 55px;
+            height: 55px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .nav-brand h2 {
+            font-size: 22px;
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #666;
+            padding: 25px 20px;
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-menu li a:hover {
+            color: #0093E9;
+            background: rgba(0, 147, 233, 0.05);
+        }
+
+        .nav-menu li a.active {
+            color: #0093E9;
+            border-bottom-color: #0093E9;
+            background: rgba(0, 147, 233, 0.05);
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-user span {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 147, 233, 0.3);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 147, 233, 0.4);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Billing Header */
+        .billing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .billing-header h1 {
+            font-size: 32px;
+            color: #090909;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #4a7a92;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .btn-info {
+            padding: 10px 20px;
+            background: rgb(255, 255, 255);
+            color: #0093E9;
+            border: 2px solid #0093E9;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 147, 233, 0.3);
+            background: #0093E9;
+            color: white;
+        }
+
+        /* Billing Layout */
+        .billing-layout {
+            display: flex;
+            justify-content: center;
+            gap: 20px 0;
+        }
+
+        .billing-panel {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .customer-section, .search-section, .items-section, 
+        .summary-section, .payment-section {
+            margin-bottom: 25px;
+        }
+
+        .customer-section h3, .search-section h3, .items-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0093E9;
+            box-shadow: 0 0 0 4px rgba(0, 147, 233, 0.1);
+        }
+
+        /* Search Box */
+        .search-box-wrapper {
+            position: relative;
+        }
+
+        #medicineSearch {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
+
+        #medicineSearch:focus {
+            outline: none;
+            border-color: #0093E9;
+            box-shadow: 0 0 0 4px rgba(0, 147, 233, 0.1);
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #0093E9;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 8px 20px rgba(0, 147, 233, 0.2);
+        }
+
+        .search-result-item {
+            padding: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+
+        .search-result-item:hover {
+            background: rgba(0, 147, 233, 0.05);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .medicine-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .medicine-details {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .stock-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .stock-good { 
+            background: rgba(16, 185, 129, 0.15); 
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .stock-low { 
+            background: rgba(245, 158, 11, 0.15); 
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* Items Table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .items-table thead {
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            color: white;
+        }
+
+        .items-table th {
+            padding: 15px 10px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .items-table td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .items-table tbody tr:hover {
+            background: rgba(0, 147, 233, 0.05);
+        }
+
+        .empty-row td {
+            text-align: center;
+            padding: 40px !important;
+            color: #999 !important;
+        }
+
+        .qty-input {
+            width: 60px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .qty-input:focus {
+            outline: none;
+            border-color: #0093E9;
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #fb7185, #f472b6);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(251, 113, 133, 0.4);
+        }
+
+        /* Summary Section */
+        .summary-section {
+            background: linear-gradient(135deg, rgba(0, 147, 233, 0.05), rgba(128, 208, 199, 0.05));
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #0093E9;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            font-size: 15px;
+        }
+
+        .summary-row input {
+            width: 100px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: right;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .summary-row input:focus {
+            outline: none;
+            border-color: #0093E9;
+        }
+
+        .total-row {
+            border-top: 2px solid #0093E9;
+            margin-top: 10px;
+            padding-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #0093E9;
+        }
+
+        /* Payment Methods */
+        .payment-section label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .payment-option {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .payment-option input {
+            margin-right: 8px;
+        }
+
+        .payment-option:hover {
+            border-color: #0093E9;
+            background: rgba(0, 147, 233, 0.05);
+        }
+
+        .payment-option:has(input:checked) {
+            border-color: #0093E9;
+            background: linear-gradient(135deg, rgba(0, 147, 233, 0.1), rgba(128, 208, 199, 0.1));
+            font-weight: 600;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: white;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-large {
+            flex: 2;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 147, 233, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 147, 233, 0.4);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .close {
+            color: white;
+            font-size: 32px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .close:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 0;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            font-size: 48px;
+            line-height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .success-message h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .success-message p {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .invoice-actions {
+            display: flex;
+            gap: 10px;
+            padding: 0 30px 30px;
+        }
+
+        .invoice-actions .btn {
+            flex: 1;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-top: 40px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-menu li a {
+                padding: 25px 15px;
+                font-size: 13px;
+            }
+
+            .billing-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-menu li a {
+                padding: 15px 12px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .billing-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .billing-header h1 {
+                font-size: 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .items-table {
+                min-width: 900px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="nav-logo">
+                <h2>Saravana Medicals</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('medicines') }}">Medicines</a></li>
+                <li><a href="{{ url_for('stock') }}">Stock</a></li>
+                <li><a href="{{ url_for('expiry') }}">Expiry Alert</a></li>
+                <li><a href="{{ url_for('billing') }}" class="active">Billing</a></li>
+                <li><a href="{{ url_for('suppliers_advanced') }}">Suppliers</a></li>
+                <li><a href="{{ url_for('reports') }}">Reports</a></li>
+            </ul>
+            <div class="nav-user">
+                <span>Welcome, {{ session.username }}</span>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Billing Header -->
+        <div class="billing-header">
+            <div>
+                <h1>Billing</h1>
+                
+            </div>
+            <button class="btn btn-info" onclick="showRecentBills()">📋 Recent Bills</button>
+        </div>
+
+        <!-- Billing Layout -->
+        <div class="billing-layout">
+            <!-- Left Panel - Billing Form -->
+            <div class="billing-panel">
+                <div id="billingForm">
+                    <!-- Customer Details -->
+                    <div class="customer-section">
+                        <h3>👤 Customer Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Customer Name (Optional)</label>
+                                <input type="text" name="customer_name" id="customerName" 
+                                       placeholder="Enter customer name" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number (Optional)</label>
+                                <input type="tel" id="customerMobile" placeholder="10-digit number" 
+                                       pattern="[0-9]{10}" maxlength="10" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medicine Search -->
+                    <div class="search-section">
+                        <h3>💊 Add Medicines</h3>
+                        <div class="search-box-wrapper">
+                            <input type="text" id="medicineSearch" placeholder="🔍 Search medicine by name or batch number..." 
+                                   autocomplete="off" autofocus>
+                            <div id="searchResults" class="search-results"></div>
+                        </div>
+                    </div>
+
+                    <!-- Items Table -->
+                    <div class="items-section">
+                        <h3>📋 Bill Items</h3>
+                        <div style="overflow-x: auto;">
+                            <table class="items-table" id="itemsTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 35%">Medicine</th>
+                                        <th style="width: 15%">Batch</th>
+                                        <th style="width: 10%">Price</th>
+                                        <th style="width: 12%">Qty</th>
+                                        <th style="width: 10%">Stock</th>
+                                        <th style="width: 13%">Amount</th>
+                                        <th style="width: 5%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itemsBody">
+                                    <tr class="empty-row">
+                                        <td colspan="7">No items added yet. Search and add medicines above.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Bill Summary -->
+                    <div class="summary-section">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">₹0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Discount (%):</span>
+                            <input type="number" id="discountPercent" value="0" min="0" max="100" 
+                                   step="0.1" onchange="calculateTotal()">
+                        </div>
+                        <div class="summary-row">
+                            <span>Discount Amount:</span>
+                            <span id="discountAmount">₹0.00</span>
+                        </div>
+                        <div class="summary-row total-row">
+                            <span>Total Amount:</span>
+                            <span id="totalAmount">₹0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="payment-section">
+                        <label>Payment Method:</label>
+                        <div class="payment-methods">
+                            <label class="payment-option">
+                                <input type="radio" name="payment_method" value="Cash" checked>
+                                <span>💵 Cash</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment_method" value="Card">
+                                <span>💳 Card</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment_method" value="UPI">
+                                <span>📱 UPI</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="clearBill()">
+                            🔄 Clear All
+                        </button>
+                        <button type="button" class="btn btn-warning" onclick="holdBill()">
+                            ⏸️ Hold Bill
+                        </button>
+                        <button type="button" class="btn btn-success btn-large" id="completeBillBtn" onclick="submitBill()">
+                            ✅ Complete Payment (F4)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Preview Modal -->
+    <div id="invoiceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✅ Bill Created Successfully!</h2>
+                <span class="close" onclick="closeInvoiceModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="success-message">
+                    <div class="success-icon">✓</div>
+                    <h3>Bill Generated</h3>
+                    <p>Sale ID: <strong id="saleIdDisplay">#</strong></p>
+                    <p>Amount: <strong id="amountDisplay">₹0.00</strong></p>
+                </div>
+                <div class="invoice-actions">
+                    <button class="btn btn-primary" onclick="printInvoice()">
+                        🖨️ Print Invoice
+                    </button>
+                    <button class="btn btn-success" onclick="newBill()">
+                        ➕ New Bill
+                    </button>
+                    <button class="btn btn-info" onclick="viewInvoice()">
+                        👁️ View Invoice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; Saravana Medicals. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let billItems = [];
+        let lastSaleId = null;
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F2') {
+                e.preventDefault();
+                document.getElementById('medicineSearch').focus();
+            } else if (e.key === 'F4') {
+                e.preventDefault();
+                if (billItems.length > 0) {
+                    document.getElementById('completeBillBtn').click();
+                }
+            } else if (e.key === 'Escape') {
+                document.getElementById('searchResults').style.display = 'none';
+                document.getElementById('medicineSearch').value = '';
+            }
+        });
+
+        // Medicine Search
+        let searchTimeout;
+        document.getElementById('medicineSearch').addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim();
+            
+            if (query.length < 1) {
+                document.getElementById('searchResults').style.display = 'none';
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                fetch(`/api/search-medicine?q=${encodeURIComponent(query)}`)
+                    .then(res => {
+                        if (!res.ok) throw new Error('Search failed');
+                        return res.json();
+                    })
+                    .then(medicines => {
+                        displaySearchResults(medicines);
+                    })
+                    .catch(err => {
+                        console.error('Search error:', err);
+                        alert('Search failed. Please try again.');
+                    });
+            }, 100);
+        });
+
+        function displaySearchResults(medicines) {
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (medicines.length === 0) {
+                resultsDiv.innerHTML = '<div style="padding: 15px; text-align: center; color: #999;">No medicines found</div>';
+                resultsDiv.style.display = 'block';
+                return;
+            }
+            
+            resultsDiv.innerHTML = medicines.map(med => `
+                <div class="search-result-item" onclick='addMedicineToCart(${JSON.stringify(med)})'>
+                    <div class="medicine-name">${med.medicine_name}</div>
+                    <div class="medicine-details">
+                        ${med.category} | Batch: ${med.batch_number} | ₹${med.price.toFixed(2)} | 
+                        Exp: ${med.expiry_date}
+                        <span class="stock-badge ${med.quantity > 10 ? 'stock-good' : 'stock-low'}">
+                            Stock: ${med.quantity}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+            
+            resultsDiv.style.display = 'block';
+        }
+
+        function addMedicineToCart(medicine) {
+            const existing = billItems.find(item => item.medicine_id === medicine.medicine_id);
+            if (existing) {
+                if (existing.quantity < medicine.quantity) {
+                    existing.quantity++;
+                    updateItemRow(existing);
+                } else {
+                    alert('Maximum stock reached!');
+                }
+            } else {
+                const item = {
+                    medicine_id: medicine.medicine_id,
+                    medicine_name: medicine.medicine_name,
+                    batch_number: medicine.batch_number,
+                    price: medicine.price,
+                    quantity: 1,
+                    max_stock: medicine.quantity
+                };
+                billItems.push(item);
+                addItemRow(item);
+            }
+            
+            document.getElementById('medicineSearch').value = '';
+            document.getElementById('searchResults').style.display = 'none';
+            
+            calculateTotal();
+        }
+
+        function addItemRow(item) {
+            const tbody = document.getElementById('itemsBody');
+            
+            const emptyRow = tbody.querySelector('.empty-row');
+            if (emptyRow) emptyRow.remove();
+            
+            const row = document.createElement('tr');
+            row.id = `item-${item.medicine_id}`;
+            row.innerHTML = `
+                <td><strong>${item.medicine_name}</strong></td>
+                <td>${item.batch_number}</td>
+                <td>₹${item.price.toFixed(2)}</td>
+                <td>
+                    <input type="number" class="qty-input" value="${item.quantity}" 
+                           min="1" max="${item.max_stock}" 
+                           onchange="updateQuantity(${item.medicine_id}, this.value)">
+                </td>
+                <td><span class="stock-badge stock-good">${item.max_stock}</span></td>
+                <td class="item-total">₹${(item.price * item.quantity).toFixed(2)}</td>
+                <td>
+                    <button type="button" class="delete-btn" onclick="removeItem(${item.medicine_id})">
+                        🗑️
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function updateItemRow(item) {
+            const row = document.getElementById(`item-${item.medicine_id}`);
+            row.querySelector('.qty-input').value = item.quantity;
+            row.querySelector('.item-total').textContent = `₹${(item.price * item.quantity).toFixed(2)}`;
+        }
+
+        function updateQuantity(medicineId, newQty) {
+            const item = billItems.find(i => i.medicine_id === medicineId);
+            if (item) {
+                const qty = parseInt(newQty);
+                if (qty > 0 && qty <= item.max_stock) {
+                    item.quantity = qty;
+                    updateItemRow(item);
+                    calculateTotal();
+                } else {
+                    alert(`Quantity must be between 1 and ${item.max_stock}`);
+                }
+            }
+        }
+
+        function removeItem(medicineId) {
+            billItems = billItems.filter(item => item.medicine_id !== medicineId);
+            document.getElementById(`item-${medicineId}`).remove();
+            
+            if (billItems.length === 0) {
+                const tbody = document.getElementById('itemsBody');
+                tbody.innerHTML = `
+                    <tr class="empty-row">
+                        <td colspan="7">No items added yet. Search and add medicines above.</td>
+                    </tr>
+                `;
+            }
+            
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const subtotal = billItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
+            const discountAmount = (subtotal * discountPercent) / 100;
+            const total = subtotal - discountAmount;
+            
+            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('discountAmount').textContent = `₹${discountAmount.toFixed(2)}`;
+            document.getElementById('totalAmount').textContent = `₹${total.toFixed(2)}`;
+        }
+
+        function clearBill() {
+            if (billItems.length > 0 && !confirm('Clear all items?')) return;
+            
+            billItems = [];
+            document.getElementById('itemsBody').innerHTML = `
+                <tr class="empty-row">
+                    <td colspan="7">No items added yet. Search and add medicines above.</td>
+                </tr>
+            `;
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerMobile').value = '';
+            document.getElementById('discountPercent').value = '0';
+            calculateTotal();
+        }
+
+        // Form Submission
+        function submitBill() {
+            if (billItems.length === 0) {
+                alert('Please add at least one item to the bill');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('customer_name', document.getElementById('customerName').value);
+            formData.append('customer_mobile', document.getElementById('customerMobile').value);
+            formData.append('payment_method', document.querySelector('input[name="payment_method"]:checked').value);
+            
+            billItems.forEach((item, index) => {
+                formData.append('medicine_id[]', item.medicine_id);
+                formData.append('quantity[]', item.quantity);
+            });
+            
+            fetch('/billing/create', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    lastSaleId = data.sale_id;
+                    document.getElementById('saleIdDisplay').textContent = '#' + data.sale_id;
+                    document.getElementById('amountDisplay').textContent = '₹' + data.total_amount.toFixed(2);
+                    document.getElementById('invoiceModal').style.display = 'block';
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(err => {
+                alert('Error creating bill: ' + err.message);
+            });
+        }
+
+        function closeInvoiceModal() {
+            document.getElementById('invoiceModal').style.display = 'none';
+        }
+
+        function newBill() {
+            closeInvoiceModal();
+            clearBill();
+        }
+
+        function printInvoice() {
+            window.open(`/billing/invoice/${lastSaleId}`, '_blank');
+        }
+
+        function viewInvoice() {
+            window.location.href = `/billing/invoice/${lastSaleId}`;
+        }
+
+        function holdBill() {
+            alert('Bill hold feature - Coming soon!');
+        }
+
+        function showRecentBills() {
+            window.location.href = '/reports';
+        }
+
+        // Click outside to close search results
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-box-wrapper')) {
+                document.getElementById('searchResults').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

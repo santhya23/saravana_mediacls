@@ -1,0 +1,13 @@
+supplier_id,supplier_name,contact_person,phone,gstin,payment_terms,rating,total_orders,outstanding,address,created_at
+13,Tamil Nadu Medicals Agencies,Murugan K,9445123456,33AABCT1234F1Z5,Net 30,4.5,245,45000.0,"RS Puram, Coimbatore",2026-01-17 14:18:26
+14,Kaveri Pharmaceuticals Pvt Ltd,Lakshmi R,8756102367,33AABCK5678G1Z8,Net 45,4.8,312,22000.0,"Gandhipuram, Coimbatore",2026-01-17 14:18:26
+15,Sri Venkateswara Medicals,Rajesh Kumar,9654120758,33AABCS9012H1Z1,Cash on Delivery,4.2,189,38500.0,"Peelamedu, Coimbatore",2026-01-17 14:18:26
+16,Meenakshi Pharma Distributors,Priya S,9786102354,33AABCM3456I1Z4,Net 30,4.6,276,15000.0,"Saibaba Colony, Coimbatore",2026-01-17 14:18:26
+17,Apollo Health & Lifestyle,Senthil Nathan,9785694100,33AABCA7890J1Z7,Net 60,4.9,428,8000.0,"Avinashi Road, Coimbatore",2026-01-17 14:18:26
+18,Sunshine Pharmaceuticals,Anitha M,985910245,33AABCS2345K1Z0,Net 30,4.3,198,52000.0,"Townhall, Coimbatore",2026-01-17 14:18:26
+19,Chennai Drug House,Karthik V,9478510232,33AABCC6789L1Z3,Net 45,4.7,356,12000.0,"Ukkadam, Coimbatore",2026-01-17 14:18:26
+20,Madurai Medical Agencies,Vasanthi P,9965410123,33AABCM1234M1Z6,Cash on Delivery,4.1,167,67000.0,"Sungam, Coimbatore",2026-01-17 14:18:26
+21,Coimbatore Pharma Traders,Sivakumar R,7456901234,33AABCC5678N1Z9,Net 30,4.4,234,29000.0,"Karamadai Road, Coimbatore",2026-01-17 14:18:26
+22,Erode Drug Distributors,Deepa K,8596147258,33AABCE9012O1Z2,Net 45,4.5,289,18000.0,"Mettupalayam Road, Coimbatore",2026-01-17 14:18:26
+23,Salem Medical Suppliers,Ganesh B,6365471256,33AABCS3456P1Z5,Net 60,4.6,312,25000.0,"Saravanampatti, Coimbatore",2026-01-17 14:18:26
+24,Tiruppur Health Care,Malini S,948596467,33AABCT7890Q1Z8,Cash on Delivery,4.0,145,72000.0,"Singanallur, Coimbatore",2026-01-17 14:18:26

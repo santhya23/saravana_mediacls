@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retail Invoice #{{ sale.sale_id }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+font-family:'Poppins',sans-serif;
+padding:20px;
+background:linear-gradient(135deg,#a8d5e2 0%,#d4e7f0 100%);
+min-height:100vh;
+}
+
+/* Background Animation */
+.bg-animation{position:fixed;width:100%;height:100%;top:0;left:0;z-index:0;pointer-events:none;}
+.bg-animation span{position:absolute;border-radius:50%;background:rgba(255,255,255,0.12);animation:float 25s infinite;}
+@keyframes float{
+0%{transform:translateY(100vh) rotate(0);opacity:0;}
+10%,90%{opacity:1;}
+100%{transform:translateY(-10vh) rotate(720deg);opacity:0;}
+}
+
+.invoice-container{
+max-width:900px;margin:auto;background:#fff;padding:40px;border-radius:10px;
+box-shadow:0 5px 25px rgba(0,0,0,0.15);position:relative;z-index:5;
+}
+
+.header{display:flex;justify-content:space-between;border-bottom:2px solid #0093E9;padding-bottom:20px;margin-bottom:30px;}
+.title{font-size:28px;font-weight:700;color:#0093E9;}
+.subtitle{font-size:13px;color:#666;margin-top:4px;}
+
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:25px;font-size:14px;}
+.meta strong{color:#0093E9;}
+
+table{width:100%;border-collapse:collapse;margin-top:10px;}
+thead{background:#0093E9;color:#fff;}
+th,td{padding:12px;border:1px solid #eee;font-size:14px;}
+.text-right{text-align:right;}
+.text-center{text-align:center;}
+
+.summary{margin-top:25px;width:320px;margin-left:auto;font-size:15px;}
+.summary div{display:flex;justify-content:space-between;padding:5px 0;}
+.summary .total{font-size:20px;font-weight:700;color:#0093E9;border-top:2px solid #0093E9;margin-top:10px;padding-top:10px;}
+
+.footer{margin-top:40px;font-size:12px;color:#666;border-top:1px solid #eee;padding-top:15px;line-height:1.6;}
+.footer strong{color:#0093E9;}
+
+.print{position:fixed;top:20px;right:20px;padding:10px 20px;background:#0093E9;color:white;border:none;border-radius:6px;cursor:pointer;}
+
+@media print{
+.bg-animation,.print{display:none;}
+.invoice-container{box-shadow:none;}
+body{background:white;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-animation">
+<span style="left:20%;width:50px;height:50px;"></span>
+<span style="left:70%;width:30px;height:30px;"></span>
+<span style="left:40%;width:60px;height:60px;"></span>
+</div>
+
+<button class="print" onclick="window.print()">Print</button>
+
+<div class="invoice-container">
+
+<div class="header">
+<div>
+<div class="title">SARAVANA MEDICALS</div>
+<div class="subtitle">Retail Medical & General Store</div>
+<div class="subtitle">Pollachi - 642007 | Tamil Nadu</div>
+</div>
+<div>
+<img src="{{ url_for('static', filename='images/logo.png') }}" width="90">
+<p style="margin-top:5px;font-size:13px;"><strong>Invoice No:</strong> {{ sale.sale_id }}</p>
+</div>
+</div>
+
+<div class="meta">
+<div>
+<strong>GSTIN:</strong> 33AFWPP9255R1Z5<br>
+<strong>Drug License:</strong> TN-PH-2026-4587<br>
+<strong>Phone:</strong> +91 97881 33455
+</div>
+<div>
+<strong>Invoice Date:</strong> {{ sale.sale_date }}<br>
+<strong>Customer:</strong> {{ sale.customer_name if sale.customer_name else 'Walk-in Customer' }}<br>
+<strong>Payment Mode:</strong> {{ sale.payment_method }}
+</div>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>S.No</th>
+<th>Medicine Name</th>
+<th>Batch No</th>
+<th class="text-center">Qty</th>
+<th class="text-right">Rate</th>
+<th class="text-right">Amount</th>
+</tr>
+</thead>
+<tbody>
+{% for item in items %}
+<tr>
+<td>{{ loop.index }}</td>
+<td>{{ item.medicine_name }}</td>
+<td>{{ item.batch_number }}</td>
+<td class="text-center">{{ item.quantity }}</td>
+<td class="text-right">₹{{ "%.2f"|format(item.price) }}</td>
+<td class="text-right">₹{{ "%.2f"|format(item.subtotal) }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<div class="summary">
+<div><span>Taxable Amount</span><span>₹{{ "%.2f"|format(sale.total_amount) }}</span></div>
+<div><span>GST</span><span>₹0.00</span></div>
+<div class="total"><span>Grand Total</span><span>₹{{ "%.2f"|format(sale.total_amount) }}</span></div>
+</div>
+ <div class="footer" style="text-align:center;">
+    <p><strong>Thank you for your business!</strong></p>
+    <p>For queries: Saravana Medicals | +91 97881 33455</p>
+    <p> Goods Once Sold Cannot Be Taken Back</p>
+</div>
+</body>
+</html>

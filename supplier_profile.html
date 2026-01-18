@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Profile - {{ supplier.supplier_name }} - Pharmacy Inventory System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background - Same as Supplier Page */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #a8d8ff 0%, #b8e6e6 100%);
+        }
+
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 25s infinite;
+            border-radius: 50%;
+        }
+
+        .bg-animation span:nth-child(1) {
+            left: 25%;
+            animation-delay: 0s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .bg-animation span:nth-child(2) {
+            left: 10%;
+            animation-delay: 2s;
+            width: 20px;
+            height: 20px;
+        }
+
+        .bg-animation span:nth-child(3) {
+            left: 70%;
+            animation-delay: 4s;
+            width: 40px;
+            height: 40px;
+        }
+
+        .bg-animation span:nth-child(4) {
+            left: 40%;
+            animation-delay: 0s;
+            width: 60px;
+            height: 60px;
+        }
+
+        .bg-animation span:nth-child(5) {
+            left: 65%;
+            animation-delay: 0s;
+            width: 30px;
+            height: 30px;
+        }
+
+        .bg-animation span:nth-child(6) {
+            left: 75%;
+            animation-delay: 3s;
+            width: 50px;
+            height: 50px;
+        }
+
+        .bg-animation span:nth-child(7) {
+            left: 35%;
+            animation-delay: 7s;
+            width: 45px;
+            height: 45px;
+        }
+
+        .bg-animation span:nth-child(8) {
+            left: 50%;
+            animation-delay: 15s;
+            width: 25px;
+            height: 25px;
+        }
+
+        .bg-animation span:nth-child(9) {
+            left: 20%;
+            animation-delay: 2s;
+            width: 35px;
+            height: 35px;
+        }
+
+        .bg-animation span:nth-child(10) {
+            left: 85%;
+            animation-delay: 0s;
+            width: 55px;
+            height: 55px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Content above animation */
+        .navbar,
+        .container,
+        .footer {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Navigation Bar - Exact Same */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .nav-brand h2 {
+            font-size: 22px;
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #666;
+            padding: 25px 20px;
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-menu li a:hover {
+            color: #0093E9;
+            background: rgba(0, 147, 233, 0.05);
+        }
+
+        .nav-menu li a.active {
+            color: #0093E9;
+            border-bottom-color: #0093E9;
+            background: rgba(0, 147, 233, 0.05);
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-user span {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 147, 233, 0.3);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 147, 233, 0.4);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            padding: 10px 25px;
+            background: white;
+            color: #666;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-icon {
+            font-size: 48px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .stat-info h3 {
+            font-size: 20px;
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            font-weight: 700;
+            word-break: break-all;
+        }
+
+        .stat-info p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Details Container */
+        .details-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .details-container h2 {
+            padding: 20px 25px;
+            margin: 0;
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .details-table {
+            width: 100%;
+        }
+
+        .details-table tr {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .details-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .details-table th {
+            background: #f8f9fa;
+            padding: 18px 25px;
+            font-weight: 600;
+            width: 30%;
+            text-align: left;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .details-table td {
+            padding: 18px 25px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin: 30px 0 20px 0;
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Empty State */
+        .empty-state {
+            background: white;
+            padding: 60px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .empty-state .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            color: #666;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-top: 40px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-menu li a {
+                padding: 25px 15px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-menu li a {
+                padding: 15px 12px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .page-header h1 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .details-table th {
+                width: 40%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="nav-logo">
+                <h2>Saravana Medicals</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('medicines') }}">Medicines</a></li>
+                <li><a href="{{ url_for('stock') }}">Stock</a></li>
+                <li><a href="{{ url_for('expiry') }}">Expiry Alert</a></li>
+                <li><a href="{{ url_for('billing') }}">Billing</a></li>
+                <li><a href="{{ url_for('suppliers_advanced') }}" class="active">Suppliers</a></li>
+                <li><a href="{{ url_for('reports') }}">Reports</a></li>
+            </ul>
+            <div class="nav-user">
+                <span>Welcome, {{ session.username }}</span>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1> {{ supplier.supplier_name }}</h1>
+            <a href="{{ url_for('suppliers_advanced') }}" class="btn-secondary">← Back to Suppliers</a>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📞</div>
+                <div class="stat-info">
+                    <h3>{{ supplier.phone }}</h3>
+                    <p>Contact Number</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👤</div>
+                <div class="stat-info">
+                    <h3>{{ supplier.contact_person or 'N/A' }}</h3>
+                    <p>Contact Person</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📧</div>
+                <div class="stat-info">
+                    <h3>{{ supplier.email or 'N/A' }}</h3>
+                    <p>Email</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-info">
+                    <h3>{% for i in range((supplier.rating or 3)|int) %}⭐{% endfor %}</h3>
+                    <p>Rating</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supplier Details -->
+        <div class="details-container">
+            <h2>📋 Supplier Details</h2>
+            <table class="details-table">
+                <tr>
+                    <th>Supplier ID</th>
+                    <td>{{ supplier.supplier_id }}</td>
+                </tr>
+                <tr>
+                    <th>GSTIN</th>
+                    <td>{{ supplier.gstin or 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th>Payment Terms</th>
+                    <td>{{ supplier.payment_terms or 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th>Preferred Payment Mode</th>
+                    <td>{{ supplier.preferred_payment_mode or 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>{{ supplier.address or 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th>Account Created</th>
+                    <td>{{ supplier.created_at or 'N/A' }}</td>
+                </tr>
+            </table>
+        </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy;Saravana Medicals. All rights reserved.</p>
+    </div>
+</body>
+</html>
